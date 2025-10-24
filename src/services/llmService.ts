@@ -30,7 +30,7 @@ export class LLMService {
 
     try {
       const response = await this.openai.chat.completions.create({
-        model: 'gpt-4',
+        model: 'gpt-5-mini',
         messages: [
           {
             role: 'system',
@@ -76,7 +76,7 @@ export class LLMService {
 
     try {
       const response = await this.openai.chat.completions.create({
-        model: 'gpt-4',
+        model: 'gpt-5-mini',
         messages: [
           {
             role: 'system',
@@ -121,7 +121,7 @@ export class LLMService {
 
     try {
       const response = await this.openai.chat.completions.create({
-        model: 'gpt-4',
+        model: 'gpt-5-mini',
         messages: [
           {
             role: 'system',
