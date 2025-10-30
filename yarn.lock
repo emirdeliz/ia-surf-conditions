@@ -624,7 +624,7 @@
     zod "^3.22.4"
     zod-to-json-schema "^3.22.3"
 
-"@langchain/core@^0.1.0", "@langchain/core@~0.1.13", "@langchain/core@~0.1.60":
+"@langchain/core@^0.1.0", "@langchain/core@~0.1.60":
   version "0.1.63"
   resolved "https://registry.yarnpkg.com/@langchain/core/-/core-0.1.63.tgz#33cc48877739e9fdb5885fbd4b16fd08d1597050"
   integrity sha512-+fjyYi8wy6x1P+Ee1RWfIIEyxd9Ee9jksEwvrggPwwI/p45kIDTdYTblXsM13y4mNWTiACyLSdbwnPaxxdoz+w==
@@ -649,17 +649,6 @@
   dependencies:
     "@langchain/core" ">0.1.61 <0.3.0"
     uuid "^9.0.1"
-
-"@langchain/openai@^0.0.14":
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/@langchain/openai/-/openai-0.0.14.tgz#27a6ba83f6b754391868b22f3b90cd440038acf0"
-  integrity sha512-co6nRylPrLGY/C3JYxhHt6cxLq07P086O7K3QaZH7SFFErIN9wSzJonpvhZR07DEUq6eK6wKgh2ORxA/NcjSRQ==
-  dependencies:
-    "@langchain/core" "~0.1.13"
-    js-tiktoken "^1.0.7"
-    openai "^4.26.0"
-    zod "^3.22.4"
-    zod-to-json-schema "^3.22.3"
 
 "@langchain/openai@~0.0.28":
   version "0.0.34"
@@ -3048,6 +3037,13 @@ num-sort@^2.0.0:
   resolved "https://registry.yarnpkg.com/num-sort/-/num-sort-2.1.0.tgz#1cbb37aed071329fdf41151258bc011898577a9b"
   integrity sha512-1MQz1Ed8z2yckoBeSfkQHHO9K1yDRxxtotKSJ9yvcTUUxSvfvzEq5GwBrjjHEpMlq/k5gvXdmJ1SbYxWtpNoVg==
 
+ollama@^0.5.0:
+  version "0.5.18"
+  resolved "https://registry.yarnpkg.com/ollama/-/ollama-0.5.18.tgz#10b8ee9e5cd840f2003b7bbea1802dd772e6a564"
+  integrity sha512-lTFqTf9bo7Cd3hpF6CviBe/DEhewjoZYd9N/uCe7O20qYTvGqrNOFOBDj3lbZgFWHUgDv5EeyusYxsZSLS8nvg==
+  dependencies:
+    whatwg-fetch "^3.6.20"
+
 once@^1.3.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/once/-/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
@@ -3062,7 +3058,7 @@ onetime@^5.1.2:
   dependencies:
     mimic-fn "^2.1.0"
 
-openai@^4.20.0, openai@^4.26.0, openai@^4.41.1:
+openai@^4.41.1:
   version "4.104.0"
   resolved "https://registry.yarnpkg.com/openai/-/openai-4.104.0.tgz#c489765dc051b95019845dab64b0e5207cae4d30"
   integrity sha512-p99EFNsA/yX6UhVO93f5kJsDRLAg+CTA2RBqdHK4RtK8u5IJw32Hyb2dTGKbnnFmnuoBv5r7Z2CURI9sGZpSuA==
@@ -3703,6 +3699,11 @@ whatwg-encoding@^3.1.1:
   integrity sha512-6qN4hJdMwfYBtE3YBTTHhoeuUrDBPZmbQaxWAqSALV/MeEnR5z1xd8UKud2RAkFoPkmB+hli1TZSnyi84xz1vQ==
   dependencies:
     iconv-lite "0.6.3"
+
+whatwg-fetch@^3.6.20:
+  version "3.6.20"
+  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.6.20.tgz#580ce6d791facec91d37c72890995a0b48d31c70"
+  integrity sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg==
 
 whatwg-mimetype@^4.0.0:
   version "4.0.0"
