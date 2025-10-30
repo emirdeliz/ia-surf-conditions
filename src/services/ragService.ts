@@ -9,16 +9,18 @@ export class RAGService {
   private llamaService: LlamaService;
   private vectorStoreService: VectorStoreService;
   private openWeatherApiKey: string;
+  private llamaModel: string;
 
   constructor(
     baseUrl: string = 'http://localhost:11434',
-    model: string = llamaModel,
+    model: string,
     vectorStoreService: VectorStoreService,
     openWeatherApiKey: string
   ) {
     this.llamaService = new LlamaService(baseUrl, model);
     this.vectorStoreService = vectorStoreService;
     this.openWeatherApiKey = openWeatherApiKey;
+    this.llamaModel = model;
   }
 
   /**
@@ -26,7 +28,6 @@ export class RAGService {
    */
   async querySurfKnowledge(
     spotName: string,
-    llamaModel: string,
     breakType: string,
     difficulty: string
   ): Promise<string> {
@@ -44,7 +45,7 @@ export class RAGService {
       // 3. Generate comprehensive surf knowledge
       const surfKnowledge = await this.generateSurfKnowledge(
         spotName,
-        llamaModel,
+       this. llamaModel,
         breakType,
         difficulty,
         relevantContext,
@@ -298,7 +299,7 @@ export class RAGService {
       `;
 
       const llamaResponse = await this.llamaService.ollama.chat({
-        model: llamaModel,
+        model: this.llamaModel,
         messages: [
           {
             role: 'system',
