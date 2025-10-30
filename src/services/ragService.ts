@@ -1,21 +1,22 @@
 import axios from 'axios';
-import { OpenAI } from 'openai';
+import { LlamaService } from './llamaService';
 import { VectorStoreService } from './vectorStoreService';
 
 /**
  * RAG (Retrieval-Augmented Generation) Service for surf knowledge
  */
 export class RAGService {
-  private openai: OpenAI;
+  private llamaService: LlamaService;
   private vectorStoreService: VectorStoreService;
   private openWeatherApiKey: string;
 
   constructor(
-    openaiApiKey: string,
+    baseUrl: string = 'http://localhost:11434',
+    model: string = llamaModel,
     vectorStoreService: VectorStoreService,
     openWeatherApiKey: string
   ) {
-    this.openai = new OpenAI({ apiKey: openaiApiKey });
+    this.llamaService = new LlamaService(baseUrl, model);
     this.vectorStoreService = vectorStoreService;
     this.openWeatherApiKey = openWeatherApiKey;
   }
@@ -25,6 +26,7 @@ export class RAGService {
    */
   async querySurfKnowledge(
     spotName: string,
+    llamaModel: string,
     breakType: string,
     difficulty: string
   ): Promise<string> {
@@ -42,6 +44,7 @@ export class RAGService {
       // 3. Generate comprehensive surf knowledge
       const surfKnowledge = await this.generateSurfKnowledge(
         spotName,
+        llamaModel,
         breakType,
         difficulty,
         relevantContext,
@@ -154,6 +157,7 @@ export class RAGService {
    */
   private async generateSurfKnowledge(
     spotName: string,
+    llamaModel: string,
     breakType: string,
     difficulty: string,
     relevantContext: string,
@@ -184,8 +188,8 @@ export class RAGService {
         Format your response as a comprehensive surf guide.
       `;
 
-      const response = await this.openai.chat.completions.create({
-        model: 'gpt-5-mini',
+      const llamaResponse = await this.llamaService.ollama.chat({
+        model: llamaModel,
         messages: [
           {
             role: 'system',
@@ -196,11 +200,13 @@ export class RAGService {
             content: prompt
           }
         ],
-        temperature: 0.7,
-        max_tokens: 1500
+        options: {
+          temperature: 0.7,
+          num_predict: 1500
+        }
       });
 
-      return response.choices[0]?.message?.content || 'Unable to generate surf knowledge.';
+      return llamaResponse.message.content || 'Unable to generate surf knowledge.';
     } catch (error) {
       throw new Error(`Surf knowledge generation failed: ${error}`);
     }
@@ -291,8 +297,8 @@ export class RAGService {
         Format as JSON with keys: analysis, recommendations (array), safetyAdvice (array).
       `;
 
-      const response = await this.openai.chat.completions.create({
-        model: 'gpt-5-mini',
+      const llamaResponse = await this.llamaService.ollama.chat({
+        model: llamaModel,
         messages: [
           {
             role: 'system',
@@ -303,11 +309,13 @@ export class RAGService {
             content: prompt
           }
         ],
-        temperature: 0.6,
-        max_tokens: 1000
+        options: {
+          temperature: 0.6,
+          num_predict: 1000
+        }
       });
-
-      const content = response.choices[0]?.message?.content || '';
+      
+      const content = llamaResponse.message.content || '';
       
       try {
         const jsonMatch = content.match(/\{[\s\S]*\}/);
@@ -372,5 +380,26 @@ export class RAGService {
     } catch (error) {
       throw new Error(`Spot recommendations failed: ${error}`);
     }
+  }
+
+  /**
+   * Check if Llama service is available
+   */
+  async isLlamaAvailable(): Promise<boolean> {
+    return await this.llamaService.isAvailable();
+  }
+
+  /**
+   * Get available Llama models
+   */
+  async getAvailableModels(): Promise<string[]> {
+    return await this.llamaService.getAvailableModels();
+  }
+
+  /**
+   * Get current service type
+   */
+  getCurrentService(): 'llama' {
+    return 'llama';
   }
 }

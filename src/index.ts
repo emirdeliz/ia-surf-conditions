@@ -24,7 +24,8 @@ class SurfConditionsApp {
   constructor() {
     // Initialize services with environment variables
     const openWeatherApiKey = process.env['OPENWEATHER_API_KEY'] || 'your-openweather-api-key';
-    const openaiApiKey = process.env['OPENAI_API_KEY'] || 'your-openai-api-key';
+    const llamaBaseUrl = process.env['LLAMA_BASE_URL'] || 'http://localhost:11434';
+    const llamaModel = process.env['LLAMA_MODEL'] || 'llama3.2';
     const pineconeApiKey = process.env['PINECONE_API_KEY'] || 'your-pinecone-api-key';
     const pineconeEnvironment = process.env['PINECONE_ENVIRONMENT'] || 'your-pinecone-environment';
     const mongoUri = process.env['MONGODB_URI'] || 'mongodb://localhost:27017';
@@ -32,14 +33,18 @@ class SurfConditionsApp {
     // Initialize services
     this.weatherService = new WeatherService(openWeatherApiKey);
     this.surfService = new SurfService(this.weatherService);
-    this.llmService = new LLMService(openaiApiKey);
+    
+    // Initialize LLM service with Llama
+    this.llmService = new LLMService(llamaBaseUrl, llamaModel);
+    
     this.vectorStoreService = new VectorStoreService(
       pineconeApiKey,
       pineconeEnvironment,
       mongoUri
     );
     this.ragService = new RAGService(
-      openaiApiKey,
+      llamaBaseUrl,
+      llamaModel,
       this.vectorStoreService,
       openWeatherApiKey
     );
@@ -52,6 +57,26 @@ class SurfConditionsApp {
       this.ragService,
       this.vectorStoreService
     );
+  }
+
+  /**
+   * Check LLM service status and availability
+   */
+  async checkLLMStatus(): Promise<void> {
+    console.log(`\n🤖 LLM Service Status:`);
+    console.log(`Provider: ${this.llmService.getCurrentService()}`);
+    
+    const isAvailable = await this.llmService.isLlamaAvailable();
+    console.log(`Llama Available: ${isAvailable ? '✅' : '❌'}`);
+    
+    if (isAvailable) {
+      const models = await this.llmService.getAvailableModels();
+      console.log(`Available Models: ${models.join(', ')}`);
+    } else {
+      console.log('⚠️  Llama service not available. Make sure Ollama is running on localhost:11434');
+      console.log('   Install Ollama: https://ollama.ai/');
+      console.log('   Pull a model: ollama pull llama3.2');
+    }
   }
 
   /**
@@ -281,11 +306,14 @@ class SurfConditionsApp {
    */
   async run(): Promise<void> {
     console.log('🏄‍♂️ IA Surf Conditions - AI-Powered Surf Analysis');
-    console.log('🤖 Powered by OpenAI, LangGraph, Pinecone & MongoDB');
+    console.log('🤖 Powered by Llama, LangGraph, Pinecone & MongoDB');
     console.log('='.repeat(70));
 
     // Initialize the system
     await this.initialize();
+    
+    // Check LLM service status
+    await this.checkLLMStatus();
 
     // Example surf spots
     const spots: SurfSpot[] = [
@@ -360,7 +388,7 @@ class SurfConditionsApp {
       console.log(`🔍 Pinecone Status: ${stats.pineconeStats.message}`);
       
       console.log('\n🤖 AI CAPABILITIES');
-      console.log('   ✅ OpenAI GPT-4 Integration');
+      console.log('   ✅ Llama Local Model Integration');
       console.log('   ✅ LangGraph Workflow Orchestration');
       console.log('   ✅ RAG Knowledge Retrieval');
       console.log('   ✅ Vector Embeddings (Pinecone)');
