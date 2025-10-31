@@ -1,113 +1,113 @@
-# Configuração do Llama Local
+# Llama Local Setup
 
-Este projeto usa exclusivamente o Llama local através do Ollama, permitindo análises de surf sem depender de APIs externas.
+This project uses exclusively local Llama through Ollama, allowing surf analysis without depending on external APIs.
 
-## Instalação do Ollama
+## Ollama Installation
 
-1. **Instale o Ollama:**
+1. **Install Ollama:**
    ```bash
    # macOS
    brew install ollama
    
-   # Ou baixe de: https://ollama.ai/
+   # Or download from: https://ollama.ai/
    ```
 
-2. **Inicie o serviço Ollama:**
+2. **Start the Ollama service:**
    ```bash
    ollama serve
    ```
 
-3. **Baixe um modelo Llama:**
+3. **Download a Llama model:**
    ```bash
-   # Modelo recomendado (menor e mais rápido)
+   # Recommended model (smaller and faster)
    ollama pull llama3.2
    
-   # Ou modelos maiores para melhor qualidade
+   # Or larger models for better quality
    ollama pull llama3.1
    ollama pull llama3.1:70b
    ```
 
-## Configuração do Projeto
+## Project Configuration
 
-1. **Copie o arquivo de configuração:**
+1. **Copy the configuration file:**
    ```bash
    cp env.example .env
    ```
 
-2. **Configure as variáveis de ambiente no `.env`:**
+2. **Configure environment variables in `.env`:**
    ```env
-   # Configuração do Llama
+   # Llama Configuration
    LLAMA_BASE_URL=http://localhost:11434
    LLAMA_MODEL=llama3.2
    
-   # Suas outras configurações...
-   OPENWEATHER_API_KEY=sua_chave_aqui
+   # Your other configurations...
+   OPENWEATHER_API_KEY=your_key_here
    ```
 
-## Uso
+## Usage
 
-1. **Instale as dependências:**
+1. **Install dependencies:**
    ```bash
    yarn install
    ```
 
-2. **Execute o projeto:**
+2. **Run the project:**
    ```bash
    yarn dev
    ```
 
-3. **Teste a integração:**
+3. **Test the integration:**
    ```bash
-   # Teste básico do Llama
+   # Basic Llama test
    node test-llama.js
    
-   # Teste do RAGService com Llama
+   # RAGService test with Llama
    node test-rag-llama.js
    ```
 
-O sistema irá:
-- Verificar se o Ollama está rodando
-- Listar os modelos disponíveis
-- Usar o Llama para análises de surf
-- Usar o Llama para RAG (Retrieval-Augmented Generation)
+The system will:
+- Check if Ollama is running
+- List available models
+- Use Llama for surf analysis
+- Use Llama for RAG (Retrieval-Augmented Generation)
 
-## Serviços que Usam Llama
+## Services That Use Llama
 
-Os seguintes serviços usam exclusivamente Llama local:
+The following services use exclusively local Llama:
 
-- **LLMService**: Análise de condições de surf, previsões e recomendações personalizadas
-- **RAGService**: Geração de conhecimento sobre surf usando RAG (Retrieval-Augmented Generation)
-- **SurfAnalysisWorkflow**: Workflow completo de análise de surf
+- **LLMService**: Surf condition analysis, forecasts, and personalized recommendations
+- **RAGService**: Surf knowledge generation using RAG (Retrieval-Augmented Generation)
+- **SurfAnalysisWorkflow**: Complete surf analysis workflow
 
-O projeto foi simplificado para usar apenas Llama, removendo a complexidade de múltiplos provedores.
+The project has been simplified to use only Llama, removing the complexity of multiple providers.
 
-## Modelos Llama Recomendados
+## Recommended Llama Models
 
-- **llama3.2** - Mais rápido, bom para desenvolvimento
-- **llama3.1** - Melhor qualidade, mais lento
-- **llama3.1:70b** - Melhor qualidade, requer mais RAM
+- **llama3.2** - Fastest, good for development
+- **llama3.1** - Better quality, slower
+- **llama3.1:70b** - Best quality, requires more RAM
 
 ## Troubleshooting
 
-### Ollama não está rodando
+### Ollama is not running
 ```bash
-# Verifique se o Ollama está rodando
+# Check if Ollama is running
 curl http://localhost:11434/api/tags
 
-# Inicie o Ollama se necessário
+# Start Ollama if necessary
 ollama serve
 ```
 
-### Modelo não encontrado
+### Model not found
 ```bash
-# Liste modelos disponíveis
+# List available models
 ollama list
 
-# Baixe o modelo necessário
+# Download the required model
 ollama pull llama3.2
 ```
 
-### Erro de conexão
-- Verifique se a porta 11434 está livre
-- Confirme que o Ollama está rodando
-- Verifique se o modelo foi baixado corretamente
+### Connection error
+- Verify that port 11434 is available
+- Confirm that Ollama is running
+- Check if the model was downloaded correctly
